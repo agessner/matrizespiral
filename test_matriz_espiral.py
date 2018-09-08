@@ -1,6 +1,6 @@
 import unittest
 
-from matriz_espiral import criar_matriz_populada_com_zeros, criar_matriz_espiral
+from matriz_espiral import criar_matriz_populada_com_zeros, MatrizEspiral
 
 
 class CriarMatrizPopuladaComZerosTests(unittest.TestCase):
@@ -34,8 +34,9 @@ class CriarMatrizEspiralTests(unittest.TestCase):
 	def test_cria_matriz_espiral_com_uma_linha(self):
 		n_linhas = 1
 		n_colunas = 5
+		matriz = MatrizEspiral(n_linhas, n_colunas)
 
-		resultado = criar_matriz_espiral(n_linhas, n_colunas)
+		resultado = matriz.executar()
 
 		esperado = [
 			[1, 2, 3, 4, 5]
@@ -45,8 +46,9 @@ class CriarMatrizEspiralTests(unittest.TestCase):
 	def test_cria_matriz_espiral_com_duas_linhas(self):
 		n_linhas = 2
 		n_colunas = 5
+		matriz = MatrizEspiral(n_linhas, n_colunas)
 
-		resultado = criar_matriz_espiral(n_linhas, n_colunas)
+		resultado = matriz.executar()
 
 		esperado = [
 			[1,  2, 3, 4, 5],
@@ -57,8 +59,9 @@ class CriarMatrizEspiralTests(unittest.TestCase):
 	def test_cria_matriz_espiral_com_cinco_linhas(self):
 		n_linhas = 5
 		n_colunas = 5
+		matriz = MatrizEspiral(n_linhas, n_colunas)
 
-		resultado = criar_matriz_espiral(n_linhas, n_colunas)
+		resultado = matriz.executar()
 
 		esperado = [
 			[1,  2,  3,  4,  5],
