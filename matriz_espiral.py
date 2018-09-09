@@ -32,16 +32,46 @@ class MatrizEspiral(object):
 		return self._contador < self._ultimo_numero_possivel_do_contador + 1
 		
 	def _preencher_linha_da_esquerda_para_direita(self):
-		self._preencher_matriz(self._existe_coluna, self._ir_para_proxima_coluna, self._voltar_para_coluna_anterior)
+		self._preencher_matriz(
+			fn_limite=self._existe_coluna, 
+			fn_proxima_celula=self._ir_para_proxima_coluna, 
+			fn_ajuste=self._voltar_para_coluna_anterior
+		)
 		
 	def _preencher_coluna_de_cima_para_baixo(self):
-		self._preencher_matriz(self._existe_linha, self._ir_para_proxima_linha, self._voltar_para_linha_anterior)
+		self._preencher_matriz(
+			fn_limite=self._existe_linha,
+			fn_proxima_celula=self._ir_para_proxima_linha,
+			fn_ajuste=self._voltar_para_linha_anterior
+		)
 
 	def _preencher_linha_da_direita_para_esquerda(self):
-		self._preencher_matriz(self._existe_coluna, self._voltar_para_coluna_anterior, self._ir_para_proxima_coluna)
+		self._preencher_matriz(
+			fn_limite=self._existe_coluna,
+			fn_proxima_celula=self._voltar_para_coluna_anterior,
+			fn_ajuste=self._ir_para_proxima_coluna
+		)
 
 	def _preencher_coluna_de_baixo_para_cima(self):
-		self._preencher_matriz(self._existe_linha, self._voltar_para_linha_anterior, self._ir_para_proxima_linha)
+		self._preencher_matriz(
+			fn_limite=self._existe_linha,
+			fn_proxima_celula=self._voltar_para_linha_anterior,
+			fn_ajuste=self._ir_para_proxima_linha
+		)
+
+	def _preencher_matriz(self, fn_limite, fn_proxima_celula, fn_ajuste):
+		while fn_limite() and self._deve_preencher_celula():
+			self._preencher_celula()
+			fn_proxima_celula()
+			
+		fn_ajuste()
+
+	def _deve_preencher_celula(self):
+		return self._matriz[self._indice_da_linha][self._indice_da_coluna] == 0
+
+	def _preencher_celula(self):
+		self._matriz[self._indice_da_linha][self._indice_da_coluna] = self._contador
+		self._contador = self._contador + 1
 
 	def _ir_para_proxima_linha(self):
 		self._indice_da_linha = self._indice_da_linha + 1
@@ -62,17 +92,3 @@ class MatrizEspiral(object):
 	def _existe_linha(self):
 		return len(self._matriz) > self._indice_da_linha \
 			and self._indice_da_linha >= 0
-
-	def _deve_preencher_celula(self):
-		return self._matriz[self._indice_da_linha][self._indice_da_coluna] == 0
-
-	def _preencher_celula(self):
-		self._matriz[self._indice_da_linha][self._indice_da_coluna] = self._contador
-		self._contador = self._contador + 1
-
-	def _preencher_matriz(self, fn_limite, fn_proxima_celula, fn_ajuste):
-		while fn_limite() and self._deve_preencher_celula():
-			self._preencher_celula()
-			fn_proxima_celula()
-			
-		fn_ajuste()
