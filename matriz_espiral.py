@@ -32,32 +32,16 @@ class MatrizEspiral(object):
 		return self._contador < self._ultimo_numero_possivel_do_contador + 1
 		
 	def _preencher_linha_da_esquerda_para_direita(self):
-		while self._existe_coluna() and self._deve_preencher_celula():
-			self._preencher_celula()
-			self._indice_da_coluna = self._indice_da_coluna + 1
-
-		self._indice_da_coluna = self._indice_da_coluna - 1
-	
-	def _preencher_coluna_de_cima_para_baixo(self):
-		while self._existe_linha() and self._deve_preencher_celula():
-			self._preencher_celula()
-			self._indice_da_linha = self._indice_da_linha + 1
+		self._preencher_matriz(self._existe_coluna, self._ir_para_proxima_coluna, self._voltar_para_coluna_anterior)
 		
-		self._indice_da_linha = self._indice_da_linha - 1
+	def _preencher_coluna_de_cima_para_baixo(self):
+		self._preencher_matriz(self._existe_linha, self._ir_para_proxima_linha, self._voltar_para_linha_anterior)
 
 	def _preencher_linha_da_direita_para_esquerda(self):
-		while self._existe_coluna() and self._deve_preencher_celula():
-			self._preencher_celula()
-			self._indice_da_coluna = self._indice_da_coluna - 1
-
-		self._indice_da_coluna = self._indice_da_coluna + 1
+		self._preencher_matriz(self._existe_coluna, self._voltar_para_coluna_anterior, self._ir_para_proxima_coluna)
 
 	def _preencher_coluna_de_baixo_para_cima(self):
-		while self._existe_linha() and self._deve_preencher_celula():
-			self._preencher_celula()
-			self._indice_da_linha = self._indice_da_linha - 1
-			
-		self._indice_da_linha = self._indice_da_linha + 1
+		self._preencher_matriz(self._existe_linha, self._voltar_para_linha_anterior, self._ir_para_proxima_linha)
 
 	def _ir_para_proxima_linha(self):
 		self._indice_da_linha = self._indice_da_linha + 1
@@ -85,3 +69,10 @@ class MatrizEspiral(object):
 	def _preencher_celula(self):
 		self._matriz[self._indice_da_linha][self._indice_da_coluna] = self._contador
 		self._contador = self._contador + 1
+
+	def _preencher_matriz(self, fn_limite, fn_proxima_celula, fn_ajuste):
+		while fn_limite() and self._deve_preencher_celula():
+			self._preencher_celula()
+			fn_proxima_celula()
+			
+		fn_ajuste()
